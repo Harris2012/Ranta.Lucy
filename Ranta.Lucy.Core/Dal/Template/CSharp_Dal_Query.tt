@@ -1,0 +1,67 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+namespace <#=this.Project.FullName#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    public partial class <#=this.Table.CsFullName#>_Dal
+    {
+        //可能需要考虑 query参数为空的问题，使用DBNullquery.LastUpdateTimeBegin为空的问题
+        public List<<#=this.Table.DalEntity#>> Query<#=this.Table.CsFullName#>(<#=this.Table.CsFullName#>QueryParam query, SqlConnection sqlConn)
+        {
+            var list = new List<<#=this.Table.DalEntity#>>();
+
+            SqlCommand sqlCmd = new SqlCommand();
+            sqlCmd.Connection = sqlConn;
+            sqlCmd.CommandText = "<#=this.Table.SP_INSERT()#>";
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region Prepare Parameters
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+            sqlCmd.Parameters.AddWithValue(@"<#=field.Name#>", query.<#=field.Name#>);
+<#
+    }
+#>
+            sqlCmd.Parameters.AddWithValue(@"CreateTime", query.CreateTime);
+            sqlCmd.Parameters.AddWithValue(@"CreateTimeBegin", query.CreateTimeBegin);
+            sqlCmd.Parameters.AddWithValue(@"CreateTimeEnd", query.CreateTimeEnd);
+            sqlCmd.Parameters.AddWithValue(@"LastUpdateTime", query.LastUpdateTime);
+            sqlCmd.Parameters.AddWithValue(@"LastUpdateTimeBegin", query.LastUpdateTimeBegin);
+            sqlCmd.Parameters.AddWithValue(@"LastUpdateTimeEnd", query.LastUpdateTimeEnd);
+            #endregion
+
+            var reader = sqlCmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var item = new <#=this.Table.DalEntity#>();
+
+                #region Convert
+                item.Id = Convert.ToInt32(reader["Id"]);
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                item.<#=field.Name#> = <#=field.ConvertMethod#>;
+<#
+    }
+#>
+                item.CreateTime = Convert.ToDateTime(reader["CreateTime"]);
+                item.LastUpdateTime = Convert.ToDateTime(reader["LastUpdateTime"]);
+                #endregion
+
+                list.Add(item);
+            }
+
+            return list;
+        }
+    }
+}

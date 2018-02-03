@@ -1,0 +1,61 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+namespace <#=this.Project.FullName#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    public partial class <#=this.Table.CsFullName#>_Dal
+    {
+        public <#=this.Table.DalEntity#> Update<#=this.Table.CsFullName#>(<#=this.Table.DalEntity#> entity, SqlConnection sqlConn)
+        {
+            <#=this.Table.DalEntity#> result = null;
+
+            SqlCommand sqlCmd = new SqlCommand();
+            sqlCmd.Connection = sqlConn;
+            sqlCmd.CommandText = "<#=this.Table.SP_UPDATE()#>";
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region Prepare Parameters
+            sqlCmd.Parameters.AddWithValue(@"Id", entity.Id);
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+            sqlCmd.Parameters.AddWithValue(@"<#=field.Name#>", entity.<#=field.Name#>);
+<#
+    }
+#>
+            #endregion
+
+            var reader = sqlCmd.ExecuteReader();
+            if (reader.Read())
+            {
+                result = new <#=this.Table.DalEntity#>();
+
+                #region Convert
+                result.Id = Convert.ToInt32(reader["Id"]);
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                result.<#=field.Name#> = <#=field.ConvertMethod#>;
+<#
+    }
+#>
+                result.CreateTime = Convert.ToDateTime(reader["CreateTime"]);
+                result.LastUpdateTime = Convert.ToDateTime(reader["LastUpdateTime"]);
+                #endregion
+            }
+
+            reader.Close();
+
+            return result;
+        }
+    }
+}

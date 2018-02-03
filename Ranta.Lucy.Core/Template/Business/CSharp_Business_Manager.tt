@@ -1,0 +1,101 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+/*
+ * WARNING:DO NOT MODIFY THIS FILE.
+*/
+namespace <#=this.Project.FullName#>.Managers
+{
+    using System;
+    using System.Collections.Generic;
+
+    using log4net;
+
+    using <#=this.Project.FullName#>.Models;
+    using <#=this.Project.FullName#>.Convertors;
+    using <#=this.Project.Name#>.Dal;
+    using <#=this.Project.Name#>.Utility;
+
+    partial class <#=this.Table.CsFullName#>Manager
+    {
+        #region Ioc
+        SqlConnectionProvider connectionProvider;
+
+        <#=this.Table.CsFullName#>_Dal dal;
+
+        <#=this.Table.CsFullName#>Convertor convertor;
+        #endregion
+
+        ILog logger = LogManager.GetLogger(typeof(<#=this.Table.CsFullName#>Manager));
+
+        #region Constructors
+        public <#=this.Table.CsFullName#>Manager()
+            : this(new SqlConnectionProvider(), new <#=this.Table.CsFullName#>_Dal(), new <#=this.Table.CsFullName#>Convertor())
+        {
+
+        }
+
+        public <#=this.Table.CsFullName#>Manager(SqlConnectionProvider connectionProvider, <#=this.Table.CsFullName#>_Dal dal, <#=this.Table.CsFullName#>Convertor convertor)
+        {
+            this.connectionProvider = connectionProvider;
+
+            this.dal = dal;
+
+            this.convertor = convertor;
+        }
+        #endregion
+
+        public <#=this.Table.BusinessModel#> Create<#=this.Table.CsFullName#>(<#=this.Table.BusinessModel#> model)
+        {
+            <#=this.Table.BusinessModel#> result = null;
+
+            var sqlConn = this.connectionProvider.GetConnection();
+
+            try
+            {
+                var entity = convertor.ToEntity(model);
+
+                var insertedEntity = this.dal.Insert<#=this.Table.CsFullName#>Entity(entity, sqlConn);
+
+                var insertedModel = this.convertor.ToModel(insertedEntity);
+            }
+            catch (Exception ex)
+            {
+                logger.Error("Create<#=this.Table.CsFullName#>", ex);
+            }
+            finally
+            {
+                sqlConn.Close();
+            }
+
+            return result;
+        }
+
+        public void Update<#=this.Table.CsFullName#>(<#=this.Table.BusinessModel#> model)
+        {
+
+        }
+
+        public void Delete<#=this.Table.CsFullName#>ById(int id)
+        {
+
+        }
+
+        public void Delete<#=this.Table.CsFullName#>ByIds(List<int> ids)
+        {
+
+        }
+
+        public <#=this.Table.BusinessModel#> Get<#=this.Table.BusinessModel#>ById(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<<#=this.Table.BusinessModel#>> Query<#=this.Table.BusinessModel#>()
+        {
+            throw new NotImplementedException();
+        }
+    }
+}

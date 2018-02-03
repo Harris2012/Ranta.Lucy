@@ -1,0 +1,24 @@
+﻿.mb10 {
+    margin-bottom: 10px;
+}
+
+#menu ul a {
+    padding-left: 30px;
+}
+
+/*TabPanel's Body*/
+.tab-content {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Syntax Highlighter */
+.syntaxhighlighter {
+    margin-top: 0px !important;
+    padding-top: 10px;
+}
+
+    .syntaxhighlighter .toolbar {
+        display: none;
+    }

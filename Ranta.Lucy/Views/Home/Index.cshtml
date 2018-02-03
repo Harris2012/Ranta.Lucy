@@ -1,0 +1,41 @@
+﻿@section scripts{
+    <script>
+        var dbservice_module = angular.module('dbservice', []);
+        dbservice_module.controller('dbservice_controller', function ($scope, $http) {
+
+            $scope.init = function () {
+
+                $http.post('/api/database/databaselist').then(function (response) {
+
+                    $scope.databases = response.data;
+                });
+
+            }
+        });
+    </script>
+}
+<div ng-app="dbservice" ng-controller="dbservice_controller" ng-init="init()">
+    <ol class="breadcrumb">
+        <li><a href="#">Lucy</a></li>
+        <li class="active">数据库</li>
+    </ol>
+    <div class="row">
+        <div class="col-lg-12">
+            <a href="#" class="btn btn-success">新建</a>
+        </div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>名称</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="database in databases">
+                <th>{{database.id}}</th>
+                <td>{{database.name}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

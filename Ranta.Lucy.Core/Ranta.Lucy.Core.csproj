@@ -1,0 +1,451 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C0F6D3CA-CF69-4A9D-AEAD-FE49FC0AE117}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ranta.Lucy.Core</RootNamespace>
+    <AssemblyName>Ranta.Lucy.Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppConst.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppConst.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\TableExtension.cs" />
+    <Compile Include="Dal\Template\CSharp_Dal_GetTvp.cs">
+      <DependentUpon>CSharp_Dal_GetTvp.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_GetTvp.cs" />
+    <Compile Include="Database\TableExtension.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_GetTvp.cs" />
+    <Compile Include="Database\Template\Sql_Sp_GetTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_GetTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Project\CSharpBusinessProject.cs" />
+    <Compile Include="Project\CSharpProjectBase.cs" />
+    <Compile Include="Project\CSharpUtilityProject.cs" />
+    <Compile Include="Project\CSharpWebProject.cs" />
+    <Compile Include="Project\ProjectBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Template\AssemblyInfo\AssemblyInfoTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AssemblyInfoTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Business\CSharp_Business_Convertor.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Business_Convertor.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Business\CSharp_Business_Manager.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Business_Manager.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Business\CSharp_Business_Manager_Empty.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Business_Manager_Empty.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Business\CSharp_Business_Model.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Business_Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Business\CSharp_Business_Project_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Business_Project_Template.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Business\Partial\CSharp_Business_Convertor.cs" />
+    <Compile Include="Template\Business\Partial\CSharp_Business_Manager.cs" />
+    <Compile Include="Template\Business\Partial\CSharp_Business_Manager_Empty.cs" />
+    <Compile Include="Template\Business\Partial\CSharp_Business_Model.cs" />
+    <Compile Include="Template\Business\Partial\CSharp_Business_Project_Template.cs" />
+    <Compile Include="Dal\Template\CSharp_Dal_Delete.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Delete.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_DeleteTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_DeleteTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_Entity.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Entity.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_Insert.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Insert.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_InsertTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_InsertTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_Query.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Query.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_QueryParam.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_QueryParam.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_Update.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Update.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_UpdateTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_UpdateTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Dal\Template\CSharp_Dal_Get.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Get.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Project\CSharpDalProject.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Project_Template.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Delete.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_DeleteTvp.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Entity.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Get.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Insert.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_InsertTvp.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Query.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_QueryParam.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_Update.cs" />
+    <Compile Include="Dal\Template\Partial\CSharp_Dal_UpdateTvp.cs" />
+    <Compile Include="FieldType.cs" />
+    <Compile Include="SolutionMetadata.cs" />
+    <Compile Include="Project\SolutionTemplate.cs" />
+    <Compile Include="Project\SqlServerProject.cs" />
+    <Compile Include="Database\Template\Partial\SqlServerProjectTemplate.cs" />
+    <Compile Include="Dal\Template\CSharp_Dal_Project_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Dal_Project_Template.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Partial\Sql_CreateSchema.cs" />
+    <Compile Include="Database\Template\Partial\Sql_CreateTable.cs" />
+    <Compile Include="Database\Template\Partial\Sql_CreateTvp.cs" />
+    <Compile Include="Field.cs" />
+    <Compile Include="Schema.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_Get.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_InsertTvp.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_Query.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_Update.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_Delete.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_DeleteTvp.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_UpdateTvp.cs" />
+    <Compile Include="Database\Template\Partial\Sql_Sp_Insert.cs" />
+    <Compile Include="Table.cs" />
+    <Compile Include="Database\Template\Sql_CreateSchema.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_CreateSchema.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Solution\Partial\SolutionTemplate.cs" />
+    <Compile Include="Template\Solution\SolutionTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SolutionTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\SqlServerProjectTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlServerProjectTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_CreateTable.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_CreateTable.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_CreateTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_CreateTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_Delete.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_Delete.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_DeleteTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_DeleteTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_Get.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_Get.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_Insert.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_Insert.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_InsertTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_InsertTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_Query.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_Query.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_Update.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_Update.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Database\Template\Sql_Sp_UpdateTvp.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sql_Sp_UpdateTvp.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Utility\CSharp_Utility_Project_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_Utility_Project_Template.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\Utility\Partial\CSharp_Utility_Project_Template.cs" />
+    <Compile Include="Template\Utility\Partial\SqlConnectionProvider.cs" />
+    <Compile Include="Template\Utility\SqlConnectionProvider.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SqlConnectionProvider.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\View\CSharp_View_CreateModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_View_CreateModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\View\CSharp_View_Project_Template.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>CSharp_View_Project_Template.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Template\View\Partial\CSharp_View_CreateModel.cs" />
+    <Compile Include="Template\View\Partial\CSharp_View_Project_Template.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AppConst.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>AppConst.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_GetTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_GetTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_GetTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_GetTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Template\AssemblyInfo\AssemblyInfoTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>AssemblyInfoTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Business\CSharp_Business_Convertor.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Business_Convertor.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Business\CSharp_Business_Manager.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Business_Manager.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Business\CSharp_Business_Manager_Empty.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Business_Manager_Empty.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Business\CSharp_Business_Model.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Business_Model.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Business\CSharp_Business_Project_Template.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Business_Project_Template.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Project_Template.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Project_Template.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Delete.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Delete.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_DeleteTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_DeleteTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Entity.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Entity.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Insert.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Insert.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_InsertTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_InsertTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Query.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Query.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_QueryParam.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_QueryParam.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Update.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Update.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_UpdateTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_UpdateTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Dal\Template\CSharp_Dal_Get.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Dal_Get.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_CreateSchema.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_CreateSchema.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Solution\SolutionTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SolutionTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\SqlServerProjectTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SqlServerProjectTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_CreateTable.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_CreateTable.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_CreateTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_CreateTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_Delete.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_Delete.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_DeleteTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_DeleteTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_Get.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_Get.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_Insert.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_Insert.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_InsertTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_InsertTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_Query.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_Query.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_Update.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_Update.cs</LastGenOutput>
+    </None>
+    <None Include="Database\Template\Sql_Sp_UpdateTvp.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>Sql_Sp_UpdateTvp.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Utility\CSharp_Utility_Project_Template.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_Utility_Project_Template.cs</LastGenOutput>
+    </None>
+    <None Include="Template\Utility\SqlConnectionProvider.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SqlConnectionProvider.cs</LastGenOutput>
+    </None>
+    <None Include="Template\View\CSharp_View_CreateModel.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_View_CreateModel.cs</LastGenOutput>
+    </None>
+    <None Include="Template\View\CSharp_View_Project_Template.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>CSharp_View_Project_Template.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Design.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,25 @@
+﻿<h3>This is a test.</h3>
+
+<div class="switch">
+    <input type="checkbox" data-on-text="选填" data-off-text="必填" data-off-color="info" /><!--可为空-->
+</div>
+<div>
+    <h3 data-toggle="tooltip" data-placement="top" title="Tooltip on left">Test</h3>
+</div>
+
+@section style{
+    <link href="http://cdn.bootcss.com/bootstrap-switch/3.3.2/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet">
+    <link href="http://cdn.bootcss.com/tooltipster/3.0.5/css/tooltipster.min.css" rel="stylesheet">
+}
+
+@section scripts{
+    <script src="http://cdn.bootcss.com/bootstrap-switch/3.3.2/js/bootstrap-switch.min.js"></script>
+    <script src="http://cdn.bootcss.com/tooltipster/3.0.5/js/jquery.tooltipster.min.js"></script>
+    <script>
+        $(function () {
+            $('input[type=checkbox]').bootstrapSwitch();
+            $('[data-toggle="tooltip"]').tooltip();
+        })
+    </script>
+}
+

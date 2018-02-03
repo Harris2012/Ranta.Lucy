@@ -1,0 +1,22 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+CREATE TYPE <#=this.Table.TVP_NAME()#> AS TABLE
+(
+    [Id] INT PRIMARY KEY,
+<#
+    if(this.Table.Fields != null && this.Table.Fields.Count > 0)
+    {
+        foreach(var field in this.Table.Fields)
+        {
+#>
+    [<#=field.Name#>] <#=field.FullType#>,
+<#
+        }
+    }
+#>
+    [CreateTime] DATETIME,
+    [LastUpdateTime] DATETIME
+)

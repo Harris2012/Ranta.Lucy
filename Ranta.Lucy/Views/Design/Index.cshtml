@@ -1,0 +1,163 @@
+﻿@{
+    ViewBag.Title = "Lucy Build System";
+}
+@section style{
+    <link href="~/css/lucy.design.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
+    <script src="~/js/lucy.design.js"></script>
+}
+
+<div class="row">
+    <div class="col-sm-9 col-md-10 col-lg-10">
+        <div class="panel panel-default">
+            <div class="panel-heading">Edit</div>
+            <div class="panel-body">
+                <div id="area"></div>
+                @using (Html.BeginForm("create", "design", FormMethod.Post, new { @class = "pull-right", @onsubmit = "return lucy.canSubmit();" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <input id="model.Data" type="hidden" />
+                    <input type="submit" value="Create" />
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-3 col-md-2 col-lg-2">
+        <div id="ide">
+            <div id="toolbox" class="panel panel-default">
+                <div class="panel-heading">
+                    <span>Toolbox</span>
+                    <div class="pull-right">
+                        <i class="glyphicon glyphicon-arrow-up"></i>
+                        <i class="glyphicon glyphicon-arrow-down" style="display:none;"></i>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab-basic" data-toggle="tab">Basic</a>
+                        </li>
+                        <li>
+                            <a href="#tab-common" data-toggle="tab">Common</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div class="tab-pane active" id="tab-basic">
+                            <div class="panel panel-info" data-type="schema">
+                                <div class="panel-heading">
+                                    <span>Schema</span>
+                                    <div class="pull-right">
+                                        <i class="glyphicon glyphicon-arrow-up"></i>
+                                        <i class="glyphicon glyphicon-arrow-down" style="display:none;"></i>
+                                        <i class="glyphicon glyphicon-minus"></i>
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body"></div>
+                            </div>
+                            <div class="panel panel-success" data-type="table">
+                                <div class="panel-heading">
+                                    <span>Table</span>
+                                    <div class="pull-right">
+                                        <i class="glyphicon glyphicon-arrow-up"></i>
+                                        <i class="glyphicon glyphicon-arrow-down" style="display:none;"></i>
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </div>
+                                </div>
+                                <div class="panel-body"></div>
+                            </div>
+                            <div class="panel panel-warning" data-type="field">
+                                <div class="panel-heading">
+                                    <span>Field</span>
+                                    <div class="pull-right">
+                                        <i class="glyphicon glyphicon-remove"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane" id="tab-common">
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">UserName</div>
+                                <div class="panel-body"></div>
+                            </div>
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">Password</div>
+                                <div class="panel-body"></div>
+                            </div>
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">Telephone</div>
+                                <div class="panel-body"></div>
+                            </div>
+                            <div class="panel panel-warning">
+                                <div class="panel-heading">QQ</div>
+                                <div class="panel-body"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="property">
+                <!--Schema Properties Begin-->
+                <div class="panel panel-info" style="display:none;">
+                    <div class="panel-heading">Properties</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">Name</span>
+                            <input type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-default" href="#">Save</a>
+                        </div>
+                    </div>
+                </div>
+                <!--Schema Properties End-->
+                <!--Table Properties Begin-->
+                <div class="panel panel-success" style="display:none;">
+                    <div class="panel-heading">Properties</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">Name</span>
+                            <input type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-default" href="#">Save</a>
+                        </div>
+                    </div>
+                </div>
+                <!--Table Properties End-->
+                <!--Field Properties Begin-->
+                <div class="panel panel-warning" style="display:none;">
+                    <div class="panel-heading">Properties</div>
+                    <div class="panel-body">
+                        <div class="input-group">
+                            <span class="input-group-addon">Name</span>
+                            <input type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Type</span>
+                            <select class="form-control">
+                                <option>NVARCHAR</option>
+                                <option>VARCHAR</option>
+                                <option>INT</option>
+                                <option>DATETIME</option>
+                                <option>BIT</option>
+                            </select>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">Size</span>
+                            <input type="text" class="form-control" placeholder="Name">
+                        </div>
+                        <div class="pull-right">
+                            <a class="btn btn-default" href="#">Save</a>
+                        </div>
+                    </div>
+                </div>
+                <!--Field Properties End-->
+            </div>
+        </div>
+    </div>
+</div>
+

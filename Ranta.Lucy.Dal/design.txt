@@ -1,0 +1,3 @@
+﻿数据库类型(mssql mysql sqlite)
+
+项目类型 (.net web)

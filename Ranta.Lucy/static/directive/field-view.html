@@ -1,0 +1,67 @@
+﻿<div class="list-group-item">
+    <div class="row" ng-show="isEditing==false">
+        <div>
+            <div class="col-sm-1">
+                <label class="form-control-static">{{oldField.fieldIndex}}</label>
+            </div>
+            <div class="col-sm-3">
+                <label class="form-control-static">{{oldField.fieldName}}</label>
+            </div>
+            <div class="col-sm-2">
+                <label class="form-control-static">{{oldField.fieldType}}</label>
+            </div>
+            <div class="col-sm-2">
+                <label class="form-control-static">{{oldField.fieldLength}}</label>
+            </div>
+            <div class="col-sm-2">
+                <label class="form-control-static" ng-show="oldField.nullable">可为空</label>
+                <label class="form-control-static" ng-show="!oldField.nullable">可为空</label>
+            </div>
+            <div class="col-sm-2">
+                <label class="form-control-static"><a href="javascript:void(0);" ng-click="openEditField()">编辑</a></label>
+                <label class="form-control-static"><a href="javascript:void(0);" ng-click="deleteField()">删除</a></label>
+            </div>
+        </div>
+    </div>
+    <div class="row" ng-show="isEditing==true">
+        <div class="col-sm-1">
+            <label class="form-control-static">{{oldField.fieldIndex}}</label>
+        </div>
+        <div class="col-sm-3">
+            <input type="text" class="form-control" ng-model="newField.fieldName" />
+        </div>
+        <div class="col-sm-2">
+            <span class="form-control" ng-click="fieldTypeBoxClicked($event)" ng-show="newField.fieldType==null">请选择</span>
+            <span class="form-control" ng-click="fieldTypeBoxClicked($event)" ng-show="newField.fieldType!=null">{{newField.fieldType}}</span>
+            <ul class="field-type-selection" ng-show="isEditingFieldType">
+                <li class="l1" ng-repeat="fieldGroup in fieldTypeGroupList" onmouseenter="filedTypeL1MouseEnter(this)" onmouseleave="fieldTypeL1MouseLeave(this)">
+                    <span>{{fieldGroup.groupName}}</span>
+                    <ul style="display:none">
+                        <li class="l2" ng-repeat="fieldType in fieldGroup.fieldList" data-type="{{fieldType.fieldName}}" data-lengthomissable="{{fieldType.lengthOmissable}}" ng-click="l2Click($event)">{{fieldType.fieldName}}</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" ng-readonly="newField.lengthOmissable" ng-model="newField.fieldLength" />
+        </div>
+        <div class="col-sm-2">
+            <div class="switch">
+                <input type="checkbox" data-on-text="选填" data-off-text="必填" data-off-color="info" checked />
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <label class="form-control-static"><a href="javascript:void(0);" ng-click="cancelEditField()">取消</a></label>
+            <label class="form-control-static"><a href="javascript:void(0);" ng-click="saveField()">保存</a></label>
+        </div>
+    </div>
+    <!--<div class="row">
+        <div class="col-sm-12">
+            <p>{{oldField}}</p>
+        </div>
+        <div class="col-sm-12">
+            <p>{{newField}}</p>
+        </div>
+    </div>-->
+
+</div>

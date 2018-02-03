@@ -1,0 +1,96 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+namespace <#=this.Project.FullName#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    public partial class <#=this.Table.CsFullName#>_Dal
+    {
+        public List<<#=this.Table.DalEntity#>> Insert<#=this.Table.CsFullName#>s(List<<#=this.Table.DalEntity#>> entities, SqlConnection sqlConn)
+        {
+            var list = new List<<#=this.Table.DalEntity#>>();
+
+            SqlCommand sqlCmd = new SqlCommand();
+            sqlCmd.Connection = sqlConn;
+            sqlCmd.CommandText = "<#=this.Table.SP_TVP_INSERT()#>";
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region Prepare Parameters
+            DataTable table = new DataTable();
+
+            #region Columns
+            table.Columns.Add("Id", typeof(int));
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+            table.Columns.Add("<#=field.Name#>", typeof(<#=field.PropertyType#>));
+<#
+    }
+#>
+            table.Columns.Add("CreateTime", typeof(DateTime));
+            table.Columns.Add("LastUpdateTime", typeof(DateTime));
+            #endregion
+
+            int index=1;
+
+            foreach (var entity in entities)
+            {
+                var row = table.NewRow();
+
+                #region Rows
+                row["Id"] = index++;
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                row["<#=field.Name#>"] = entity.<#=field.Name#>;
+<#
+    }
+#>
+                row["CreateTime"] = DateTime.Now;
+                row["LastUpdateTime"] = DateTime.Now;
+                #endregion
+
+                table.Rows.Add(row);
+            }
+
+            SqlParameter tvpParameter = new SqlParameter(@"<#=this.Table.TVP_PARAM_NAME()#>", SqlDbType.Structured);
+            tvpParameter.Value = table;
+            sqlCmd.Parameters.Add(tvpParameter);
+            #endregion
+
+            var reader = sqlCmd.ExecuteReader();
+            while (reader.Read())
+            {
+                var item = new <#=this.Table.DalEntity#>();
+
+                #region Convert
+                item.Id = Convert.ToInt32(reader["Id"]);
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                item.<#=field.Name#> = <#=field.ConvertMethod#>;
+<#
+    }
+#>
+                item.CreateTime = Convert.ToDateTime(reader["CreateTime"]);
+                item.LastUpdateTime = Convert.ToDateTime(reader["LastUpdateTime"]);
+                #endregion
+
+                list.Add(item);
+            }
+
+            reader.Close();
+
+            return list;
+        }
+    }
+}

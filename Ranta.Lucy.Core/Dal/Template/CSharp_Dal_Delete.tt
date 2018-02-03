@@ -1,0 +1,29 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+namespace <#=this.Project.FullName#>
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Data;
+    using System.Data.SqlClient;
+
+    public partial class <#=this.Table.CsFullName#>_Dal
+    {
+        public bool Delete<#=this.Table.CsFullName#>(int id, SqlConnection sqlConn)
+        {
+            SqlCommand sqlCmd = new SqlCommand();
+            sqlCmd.Connection = sqlConn;
+            sqlCmd.CommandText = "<#=this.Table.SP_DELETE()#>";
+            sqlCmd.CommandType = CommandType.StoredProcedure;
+
+            #region Prepare Parameters
+            sqlCmd.Parameters.AddWithValue(@"Id", id);
+            #endregion
+
+            return sqlCmd.ExecuteNonQuery() > 0;
+        }
+    }
+}

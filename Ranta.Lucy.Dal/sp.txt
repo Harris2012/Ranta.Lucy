@@ -1,0 +1,614 @@
+﻿[Lucy].[Update_Design]
+
+    @Id INT,
+    @ProjectId INT,
+    @Data VARCHAR(8000)
+
+    UPDATE [Lucy].[Design]
+    SET
+        [ProjectId] = @ProjectId,
+        [Data] = @Data,
+        [LastUpdateTime] = GETDATE()
+    OUTPUT
+        INSERTED.Id,
+        INSERTED.ProjectId,
+        INSERTED.Data,
+        INSERTED.CreateTime,
+        INSERTED.LastUpdateTime
+    WHERE
+        [Id] = @Id
+
+================================
+
+[Lucy].[Delete_Design]
+
+    @Id INT
+
+    DELETE FROM [Lucy].[Design]
+        WHERE [Id] = @Id
+
+================================
+
+CREATE PROC [Lucy].[Get_Design]
+
+    @Id INT
+
+    SELECT
+        Id,
+        ProjectId,
+        Data,
+        CreateTime,
+        LastUpdateTime
+    FROM [Lucy].[Design]
+    WHERE [Id] = @Id
+
+===============================
+
+CREATE PROC [Lucy].[Insert_Design]
+
+    @ProjectId INT,
+    @Data VARCHAR(8000)
+
+    INSERT INTO [Lucy].[Design]
+    (
+        [ProjectId],
+        [Data],
+        [CreateTime],
+        [LastUpdateTime]
+    )
+    OUTPUT
+        INSERTED.Id,
+        INSERTED.ProjectId,
+        INSERTED.Data,
+        INSERTED.CreateTime,
+        INSERTED.LastUpdateTime
+    VALUES
+    (
+        @ProjectId,
+        @Data,
+        GETDATE(),
+        GETDATE()
+    )
+
+=========================================
+
+/*
+ * Query one table with filters.
+ * All filters are going to be work as 'Equal' will combine each other by 'AND'.
+ * Unless you want to query 'CreateTime' or 'LastUpdateTime', leave them as null.
+*/
+CREATE PROC [Lucy].[Query_Design]
+(
+    @ProjectId INT,
+    @Data VARCHAR(8000),
+    @CreateTime DATETIME, -- CreateTime = @CreateTime
+    @CreateTimeBegin DATETIME, -- CreateTime >= @CreateTimeBegin
+    @CreateTimeEnd DATETIME, --CreateTime < @CreateTimeEnd
+    @LastUpdateTime DATETIME, --LastUpdateTime = @LastUpdateTime
+    @LastUpdateTimeBegin DATETIME, --LastUpdateTime >= @LastUpdateTimeBegin
+    @LastUpdateTimeEnd DATETIME, --LastUpdateTime < @LastUpdateTimeEnd
+    @PageIndex INT,--Start Page. From 1
+    @PageSize INT --Row count in a page.
+)
+AS
+BEGIN
+
+    DECLARE @TotalCount INT
+
+    SELECT @TotalCount = COUNT(1)
+    FROM [Lucy].[Design]
+    WHERE ProjectId = @ProjectId
+        AND (@Data IS NULL OR Data = @Data)
+        AND (@CreateTime IS NULL OR CreateTime = @CreateTime)
+        AND (@CreateTimeBegin IS NULL OR CreateTime >= @CreateTimeBegin)
+        AND (@CreateTimeBegin IS NULL OR CreateTime >= @CreateTimeBegin)
+        AND (@LastUpdateTime IS NULL OR LastUpdateTime = @CreateTime)
+        AND (@LastUpdateTimeBegin IS NULL OR LastUpdateTime >= @CreateTimeBegin)
+        AND (@LastUpdateTimeEnd IS NULL OR LastUpdateTime >= @CreateTimeBegin)
+    IF @TotalCount > 0
+    BEGIN
+        ;WITH T AS
+        (
+            SELECT
+                ROW_NUMBER() OVER(ORDER BY Id ASC) number,
+                Id,
+                ProjectId,
+                Data,
+                CreateTime,
+                LastUpdateTime
+            FROM [Lucy].[Design]
+            WHERE ProjectId = @ProjectId
+                AND (@Data IS NULL OR Data = @Data)
+                AND (@CreateTime IS NULL OR CreateTime = @CreateTime)
+                AND (@CreateTimeBegin IS NULL OR CreateTime >= @CreateTimeBegin)
+                AND (@CreateTimeBegin IS NULL OR CreateTime >= @CreateTimeBegin)
+                AND (@LastUpdateTime IS NULL OR LastUpdateTime = @CreateTime)
+                AND (@LastUpdateTimeBegin IS NULL OR LastUpdateTime >= @CreateTimeBegin)
+                AND (@LastUpdateTimeEnd IS NULL OR LastUpdateTime >= @CreateTimeBegin)
+        )
+        SELECT
+            Id,
+            ProjectId,
+            Data,
+            CreateTime,
+            LastUpdateTime
+        FROM T
+        WHERE number BETWEEN ((@PageIndex - 1) * @PageSize + 1) AND (@PageIndex * @PageSize)
+
+    END
+    ELSE
+    BEGIN
+        SELECT TOP 0
+            Id,
+            ProjectId,
+            Data,
+            CreateTime,
+            LastUpdateTime
+        FROM [Lucy].[Design]
+    END
+END
+
+================================================
+
+CREATE PROC [Lucy].[Delete_Project]
+(
+    @Id INT
+)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN
+
+            DELETE FROM [Lucy].[Project]
+                WHERE [Id] = @Id
+
+        COMMIT TRAN
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN
+    END CATCH
+END
+
+===================================
+
+CREATE PROC [Lucy].[Get_Project]
+(
+    @Id INT
+)
+AS
+BEGIN
+
+    SELECT
+        Id,
+        Name,
+        OwnerId,
+        CreateTime,
+        LastUpdateTime
+    FROM [Lucy].[Project]
+    WHERE [Id] = @Id
+
+END
+
+===================================
+
+CREATE PROC [Lucy].[Insert_Project]
+(
+    @Name NVARCHAR(50),
+    @OwnerId INT
+)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN
+
+            INSERT INTO [Lucy].[Project]
+            (
+                [Name],
+                [OwnerId],
+                [CreateTime],
+                [LastUpdateTime]
+            )
+            OUTPUT
+                INSERTED.Id,
+                INSERTED.Name,
+                INSERTED.OwnerId,
+                INSERTED.CreateTime,
+                INSERTED.LastUpdateTime
+            VALUES
+            (
+                @Name,
+                @OwnerId,
+                GETDATE(),
+                GETDATE()
+            )
+
+        COMMIT TRAN
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN
+    END CATCH
+END
+
+===================================
+
+/*
+ * Query one table with filters.
+ * All filters are going to be work as 'Equal' will combine each other by 'AND'.
+ * Unless you want to query 'CreateTime' or 'LastUpdateTime', leave them as null.
+*/
+CREATE PROC [Lucy].[Query_Project]
+(
+    @Name NVARCHAR(50),
+    @OwnerId INT,
+    @CreateTime DATETIME, -- CreateTime = @CreateTime
+    @CreateTimeBegin DATETIME, -- CreateTime >= @CreateTimeBegin
+    @CreateTimeEnd DATETIME, --CreateTime < @CreateTimeEnd
+    @LastUpdateTime DATETIME, --LastUpdateTime = @LastUpdateTime
+    @LastUpdateTimeBegin DATETIME, --LastUpdateTime >= @LastUpdateTimeBegin
+    @LastUpdateTimeEnd DATETIME --LastUpdateTime < @LastUpdateTimeEnd
+)
+AS
+BEGIN
+
+    SELECT
+        Id,
+        Name,
+        OwnerId,
+        CreateTime,
+        LastUpdateTime
+    FROM [Lucy].[Project]
+    WHERE Name = @Name
+        AND (@OwnerId IS NULL OR OwnerId = @OwnerId)
+        AND (@CreateTime IS NULL OR CreateTime = @CreateTime)
+        AND (@CreateTimeBegin IS NULL OR CreateTime >= @CreateTimeBegin)
+        AND (@CreateTimeBegin IS NULL OR CreateTime >= @CreateTimeBegin)
+        AND (@LastUpdateTime IS NULL OR LastUpdateTime = @CreateTime)
+        AND (@LastUpdateTimeBegin IS NULL OR LastUpdateTime >= @CreateTimeBegin)
+        AND (@LastUpdateTimeEnd IS NULL OR LastUpdateTime >= @CreateTimeBegin)
+
+END
+
+===================================
+
+CREATE PROC [Lucy].[Update_Project]
+(
+    @Id INT,
+    @Name NVARCHAR(50),
+    @OwnerId INT
+)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN
+
+            UPDATE [Lucy].[Project]
+            SET
+                [Name] = @Name,
+                [OwnerId] = @OwnerId,
+                [LastUpdateTime] = GETDATE()
+            OUTPUT
+                INSERTED.Id,
+                INSERTED.Name,
+                INSERTED.OwnerId,
+                INSERTED.CreateTime,
+                INSERTED.LastUpdateTime
+            WHERE
+                [Id] = @Id
+
+        COMMIT TRAN
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN
+    END CATCH
+END
+
+===================================
+
+CREATE PROCEDURE [Lucy].[SP_GetProject]
+(
+    @UserName NVARCHAR(50),
+    @PageIndex INT,
+    @PageSize INT
+)
+AS
+BEGIN
+    DECLARE @TotalCount INT
+
+    SELECT @TotalCount = COUNT(1)
+        FROM [Lucy].[Project]
+            INNER JOIN [Security].[User] ON [Security].[User].[Id] = [Lucy].[Project].[OwnerId]
+    WHERE [Security].[User].[UserName] = @UserName
+
+    SELECT @TotalCount AS TotalCount
+
+    IF @TotalCount = 0
+    BEGIN
+        SELECT  TOP 0
+            Id,
+            Name
+        FROM [Lucy].[Project]
+    END
+    ELSE
+    BEGIN
+        ;WITH T AS
+        (
+            SELECT
+                ROW_NUMBER()OVER(ORDER BY Id) number,
+                Id,
+                Name
+            FROM [Lucy].[Project]
+        )
+        SELECT
+            Id,
+            Name
+        FROM T
+        WHERE number BETWEEN (@PageIndex - 1) * @PageSize + 1 AND (@PageIndex * @PageSize)
+    END
+END
+
+===================================
+
+CREATE PROC [Security].[Insert_AntiCsrf]
+(
+    @CsrfCode VARCHAR(32),
+    @MarkForDelete BIT
+)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN
+
+            INSERT INTO [Security].[AntiCsrf]
+            (
+                [CsrfCode],
+                [MarkForDelete],
+                [CreateTime],
+                [LastUpdateTime]
+            )
+            OUTPUT
+                INSERTED.Id,
+                INSERTED.CsrfCode,
+                INSERTED.MarkForDelete,
+                INSERTED.CreateTime,
+                INSERTED.LastUpdateTime
+            VALUES
+            (
+                @CsrfCode,
+                @MarkForDelete,
+                GETDATE(),
+                GETDATE()
+            )
+
+        COMMIT TRAN
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN
+    END CATCH
+END
+
+===================================
+
+CREATE PROCEDURE [Security].[SP_CreateUserForTencent]
+(
+    @OpenId VARCHAR(32),
+    @AccessToken VARCHAR(32),
+    @RefreshToken VARCHAR(32),
+    @NickName NVARCHAR(20),
+    @Head40 VARCHAR(100),
+    @Head100 VARCHAR(100)
+)
+AS
+BEGIN
+
+    DECLARE @OautId_Tencent INT = 1
+
+
+    BEGIN TRY
+        BEGIN TRAN
+
+        IF EXISTS(SELECT TOP 1 * FROM [Security].[TencentOauth] WHERE [OpenId] = @OpenId)
+        BEGIN
+            UPDATE [Security].[TencentOauth]
+            SET AccessToken = @AccessToken,
+                   RefreshToken = @RefreshToken,
+                   NickName = @NickName,
+                   Head40 = @Head40,
+                   Head100 = @Head100,
+                   LastUpdateTime = GETDATE()
+            WHERE [OpenId] = @OpenId
+
+            SELECT TOP 1
+                [Security].[User].[Id],
+                [Security].[User].[UserName],
+                [Security].[User].[IsOauth],
+                [Security].[User].[DisplayOauthId],
+                [Security].[User].[EncryptedPassword],
+                [Security].[User].[Email],
+                [Security].[User].[Telephone],
+                [Security].[User].[QQ],
+                [Security].[User].[WeChat],
+                [Security].[User].[CreateTime],
+                [Security].[User].[LastUpdateTime]
+            FROM [Security].[User]
+                INNER JOIN [Security].[UserProfile] on [Security].[User].[Id] = [Security].[UserProfile].[UserId]
+                INNER JOIN [Security].[TencentOauth] on [Security].[TencentOauth].[Id] = [Security].[UserProfile].[TencentId]
+            WHERE [Security].[TencentOauth].[OpenId] = @OpenId
+        END
+        ELSE
+        BEGIN
+            DECLARE @UserId INT
+            DECLARE @OauthId INT
+
+            --Insert User
+            INSERT INTO [Security].[User]([IsOauth],[DisplayOauthId],[CreateTime], [LastUpdateTime]) VALUES (1, @OautId_Tencent, GETDATE(), GETDATE())
+
+            SELECT @UserId = @@IDENTITY
+
+            UPDATE [Security].[User]
+            SET [UserName] = 'Tencent' + CAST([Id] AS VARCHAR(10)),
+                   [NickName] = @NickName,
+                   [LastUpdateTime] = GETDATE()
+            WHERE [Id] = @UserId
+
+            --Insert Oauth
+            INSERT INTO [Security].[TencentOauth]
+            (
+                [OpenId], [AccessToken], [RefreshToken], [NickName], [Head40], [Head100],[CreateTime], [LastUpdateTime]
+            )
+            VALUES
+            (
+                @OpenId, @AccessToken, @RefreshToken, @NickName, @Head40, @Head100, GETDATE(), GETDATE()
+            )
+
+            SELECT @OauthId = @@IDENTITY
+
+            --Insert UserProfile
+            INSERT INTO [Security].[UserProfile]
+            (
+                [UserId], [TencentId], [CreateTime], [LastUpdateTime]
+            )
+            VALUES
+            (
+                @UserId, @OauthId, GETDATE(), GETDATE()
+            )
+
+            SELECT
+                Id,
+                UserName,
+                IsOauth,
+                DisplayOauthId,
+                EncryptedPassword,
+                Email,
+                Telephone,
+                QQ,
+                WeChat,
+                CreateTime,
+                LastUpdateTime
+            FROM [Security].[User]
+            WHERE [Id] = @UserId
+        END
+
+        COMMIT TRAN
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN
+        PRINT ERROR_MESSAGE()
+    END CATCH
+END
+
+
+===================================
+
+CREATE PROCEDURE [Security].[SP_GetTencentUserBasicInfo]
+(
+    @UserName NVARCHAR(50)
+)
+AS
+BEGIN
+    SELECT
+        [Security].[TencentOauth].NickName,
+        [Security].[TencentOauth].Head40,
+        [Security].[TencentOauth].Head100
+    FROM [Security].[User] INNER JOIN
+        [Security].[UserProfile] ON [Security].[User].Id = [Security].[UserProfile].UserId INNER JOIN
+        [Security].[TencentOauth] ON [Security].[UserProfile].TencentId = [Security].[TencentOauth].Id
+    WHERE [Security].[User].UserName = @UserName
+END
+
+===================================
+
+CREATE PROCEDURE [Security].[SP_GetUserNickName]
+(
+    @UserName NVARCHAR(50)
+)
+AS
+BEGIN
+    SELECT TOP 1
+        NickName
+    FROM [Security].[User]
+    WHERE [UserName] = @UserName
+END
+
+===================================
+
+CREATE PROCEDURE [Security].[SP_ValidateCsrfCode]
+(
+    @CsrfCode VARCHAR(32)
+)
+AS
+BEGIN
+    IF EXISTS(SELECT TOP 1 * FROM [Security].[AntiCsrf] WHERE [CsrfCode] = @CsrfCode AND [MarkForDelete] = 0)
+    BEGIN
+        BEGIN TRY
+            BEGIN TRAN
+
+            UPDATE [Security].[AntiCsrf]
+            SET [MarkForDelete] = 1
+            WHERE [CsrfCode] = @CsrfCode
+
+            SELECT 1
+
+            COMMIT TRAN
+        END TRY
+        BEGIN CATCH
+            ROLLBACK TRAN
+
+            SELECT 0
+        END CATCH
+    END
+    ELSE
+    BEGIN
+        SELECT 0
+    END
+END
+
+
+===================================
+
+CREATE PROCEDURE [Security].[SP_ValidateUser]
+(
+    @UserName NVARCHAR(50),
+    @EncryptedPassword VARCHAR(40)
+)
+AS
+BEGIN
+    IF EXISTS(SELECT TOP 1 * FROM [Security].[User] WHERE [UserName] = @UserName AND [EncryptedPassword] = @EncryptedPassword)
+    BEGIN
+        SELECT 1 AS IsValid
+    END
+    ELSE
+    BEGIN
+        SELECT 0 AS IsValid
+    END
+END
+
+===================================
+
+
+
+===================================
+
+
+
+===================================
+
+
+
+===================================
+
+
+
+===================================
+
+
+
+
+
+
+
+
+
+
+
+
+

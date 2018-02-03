@@ -1,0 +1,91 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+namespace <#=this.Project.FullName#>.Convertors
+{
+    using System;
+    using System.Collections.Generic;
+    using <#=this.Project.Name#>.Dal;
+    using <#=this.Project.FullName#>.Models;
+
+    public class <#=this.Table.CsFullName#>Convertor
+    {
+        public <#=this.Table.DalEntity#> ToEntity(<#=this.Table.BusinessModel#> model)
+        {
+            var entity = new <#=this.Table.DalEntity#>();
+
+            #region Properties
+            entity.Id = model.Id;
+<#
+    foreach(var field in this.Table.Fields)
+    {
+        if(field.Multiple)
+        {
+#>
+            if(model.<#=field.Name#> != null && model.<#=field.Name#>.Count > 0)
+            {
+                foreach (var i in model.<#=field.Name#>)
+                {
+                    entity.<#=field.Name#> |= (int)Math.Pow(2, i - 1);
+                }
+            }
+<#
+        }
+        else
+        {
+#>
+            entity.<#=field.Name#> = model.<#=field.Name#>;
+<#
+        }
+    }
+#>
+            entity.CreateTime = model.CreateTime;
+            entity.LastUpdateTime = model.LastUpdateTime;
+            #endregion
+
+            return entity;
+        }
+
+        public <#=this.Table.BusinessModel#> ToModel(<#=this.Table.DalEntity#> entity)
+        {
+            var model = new <#=this.Table.BusinessModel#>();
+
+            double max = 0;
+
+            #region Properties
+            model.Id = entity.Id;
+<#
+    foreach(var field in this.Table.Fields)
+    {
+        if(field.Multiple)
+        {
+#>
+            List<int> list = new List<int>();
+            max = Math.Log(entity.<#=field.Name#>, 2) + 2;
+            for (int i = 1; i < max; i++)
+            {
+                if ((entity.<#=field.Name#> & (int)Math.Pow(2, i - 1)) > 0)
+                {
+                    list.Add(i);
+                }
+            }
+<#
+        }
+        else
+        {
+#>
+            model.<#=field.Name#> = entity.<#=field.Name#>;
+<#
+        }
+    }
+#>
+            model.CreateTime = entity.CreateTime;
+            model.LastUpdateTime = entity.LastUpdateTime;
+            #endregion
+
+            return model;
+        }
+    }
+}

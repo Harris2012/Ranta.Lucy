@@ -1,0 +1,58 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+CREATE PROC <#=this.Table.SP_TVP_INSERT()#>
+(
+    @<#=this.Table.TVP_PARAM_NAME()#> <#=this.Table.TVP_NAME()#> READONLY
+)
+AS
+BEGIN
+    BEGIN TRY
+        BEGIN TRAN
+
+            INSERT INTO <#=this.Table.FullName#>
+            (
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                [<#=field.Name#>],
+<#
+    }
+#>
+                [CreateTime],
+                [LastUpdateTime]
+            )
+            OUTPUT
+                INSERTED.Id,
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                INSERTED.<#=field.Name#>,
+<#
+    }
+#>
+                INSERTED.CreateTime,
+                INSERTED.LastUpdateTime
+            SELECT
+<#
+    foreach(var field in this.Table.Fields)
+    {
+#>
+                tvp.[<#=field.Name#>],
+<#
+    }
+#>
+                GETDATE(),
+                GETDATE()
+            FROM @<#=this.Table.TVP_PARAM_NAME()#> tvp
+
+        COMMIT TRAN
+    END TRY
+    BEGIN CATCH
+        ROLLBACK TRAN
+    END CATCH
+END

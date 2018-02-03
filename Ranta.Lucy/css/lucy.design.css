@@ -1,0 +1,81 @@
+﻿#toolbox .tab-content {
+    padding: 15px;
+}
+
+.ide-item-placeholder {
+    border: 1px dotted #ddd;
+    height: 35px;
+    margin-bottom: 20px;
+}
+
+.tab-content .panel-body {
+    display: none;
+}
+
+#toolbox .panel .pull-right {
+    display: none;
+}
+
+#area {
+    min-height: 250px;
+    /*border: 1px dotted #ddd;*/
+}
+
+    #area .panel-success {
+        display: block;
+        position: relative;
+        width: 290px;
+        margin-right: 15px;
+        float: left;
+    }
+
+.schema-placeholder {
+    border: 1px dotted #bce8f1;
+    min-height: 40px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+
+.table-placeholder {
+    border: 1px dotted #d6e9c6;
+    width: 290px;
+    min-height: 40px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+
+.field-placeholder {
+    border: 1px dotted #faebcc;
+    width: 200px;
+    min-height: 40px;
+    margin-bottom: 20px;
+    border-radius: 3px;
+}
+
+.ui-sortable-helper {
+    height: 10px;
+}
+
+#area .panel-info > .panel-body:after {
+    clear: both;
+}
+
+.glyphicon {
+    cursor: pointer;
+}
+
+#property .input-group {
+    margin-bottom: 20px;
+}
+
+#property .input-group-addon {
+    width: 70px;
+}
+
+.panel-heading {
+    min-width: 140px;
+}
+
+.error {
+    border: 1px solid #f00;
+}

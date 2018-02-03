@@ -1,0 +1,97 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{<#=this.Project.ProjectGuid.ToString()#>}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace><#=this.Project.FullName#></RootNamespace>
+    <AssemblyName><#=this.Project.FullName#></AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName></SccProjectName>
+    <SccLocalPath></SccLocalPath>
+    <SccAuxPath></SccAuxPath>
+    <SccProvider></SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+<#
+    if(this.Tables != null)
+    {
+        foreach(var table in this.Tables)
+        {
+#>
+    <Compile Include="<#=string.Format(@"{0}\{0}_Entity.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_QueryParam.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Insert.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_InsertTvp.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Update.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_UpdateTvp.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Delete.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_DeleteTvp.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Get.cs", table.Value.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Query.cs", table.Value.CsFullName)#>" />
+<#
+        }
+    }
+#>
+<#
+    if(this.Schemas != null)
+    {
+        foreach (var schema in this.Schemas)
+        {
+            foreach (var table in schema.Value.Tables)
+            {
+#>
+    <Compile Include="<#=string.Format(@"{0}\{0}_Entity.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_QueryParam.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Insert.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_InsertTvp.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Update.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_UpdateTvp.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Delete.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_DeleteTvp.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Get.cs", table.CsFullName)#>" />
+    <Compile Include="<#=string.Format(@"{0}\{0}_Query.cs", table.CsFullName)#>" />
+<#
+            }
+        }
+    }
+
+#>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

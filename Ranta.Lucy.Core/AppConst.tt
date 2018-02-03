@@ -1,0 +1,40 @@
+﻿<#@ template debug="false" hostspecific="false" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ output extension=".cs" #>
+<#
+    string TargetPath = "TargetPath";
+    string[] items = new string[]
+    {
+        "ConnString", "SolutionName", "ProjectName", "ProjectGuid","Properties","AssemblyInfo"
+     };
+     string[] items2 = new string[]
+     {
+        "Database","Schema","Table","Repository","Column","ColIndex","Nullable","DataType"
+     };
+     string[]items3 = new string[]
+     {
+        "YES","NO"
+     };
+#>
+namespace Ranta.Lucy.Core
+{
+    public class AppConst
+    {
+        public const string <#=TargetPath#> = "<#=TargetPath#>";
+
+<#foreach(var item in items){#>
+        public const string <#=item#> = "<#=item#>";
+<#}#>
+
+<#foreach(var item in items2){#>
+        public const string <#=item#> = "<#=item#>";
+<#}#>
+
+<#foreach(var item in items3){#>
+        public const string <#=item#> = "<#=item#>";
+<#}#>
+    }
+}

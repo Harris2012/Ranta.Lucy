@@ -1,0 +1,25 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+CREATE TABLE <#=this.Table.FullName#>
+(
+    [Id] INT NOT NULL IDENTITY(1,1),
+<#
+    if(this.Table.Fields != null && this.Table.Fields.Count > 0)
+    {
+        foreach(var field in this.Table.Fields)
+        {
+            var fieldNullable = field.Nullable ? "NULL": "NOT NULL";
+            
+#>
+    [<#=field.Name#>] <#=field.FullType#> <#=fieldNullable#>,
+<#
+        }
+    }
+#>
+    [CreateTime] DATETIME NOT NULL,
+    [LastUpdateTime] DATETIME NOT NULL,
+    CONSTRAINT PK_<#=this.Table.UnderlineFullName#> PRIMARY KEY([Id] ASC)
+)

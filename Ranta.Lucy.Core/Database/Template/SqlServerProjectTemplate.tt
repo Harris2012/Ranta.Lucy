@@ -1,0 +1,104 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <Name><#=this.Project.FullName#></Name>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectVersion>4.1</ProjectVersion>
+    <ProjectGuid>{09d1fc8b-e0bc-428a-b128-7136ccc622dc}</ProjectGuid>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
+    <OutputType>Database</OutputType>
+    <RootPath>
+    </RootPath>
+    <RootNamespace>Tmp.Lucy.Database</RootNamespace>
+    <AssemblyName>Tmp.Lucy.Database</AssemblyName>
+    <ModelCollation>1033, CI</ModelCollation>
+    <DefaultFileStructure>BySchemaAndSchemaType</DefaultFileStructure>
+    <DeployToDatabase>True</DeployToDatabase>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetLanguage>CS</TargetLanguage>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <SqlServerVerification>False</SqlServerVerification>
+    <IncludeCompositeObjects>True</IncludeCompositeObjects>
+    <TargetDatabaseSet>True</TargetDatabaseSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <BuildScriptName>$(MSBuildProjectName).sql</BuildScriptName>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- VS10 without SP1 will not have VisualStudioVersion set, so do that here -->
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <!-- Default to the v10.0 targets path if the targets file for the current VS version is not found -->
+    <SSDTExists Condition="Exists('$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets')">True</SSDTExists>
+    <VisualStudioVersion Condition="'$(SSDTExists)' == ''">10.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v$(VisualStudioVersion)\SSDT\Microsoft.Data.Tools.Schema.SqlTasks.targets" />
+  <ItemGroup>
+    <Folder Include="Properties" />
+<#
+    foreach(var schema in this.Project.Schemas)
+    {
+#>
+    <Folder Include="<#=schema.Key#>" />
+    <Folder Include="<#=schema.Key#>\Table" />
+    <Folder Include="<#=schema.Key#>\Tvp" />
+    <Folder Include="<#=schema.Key#>\StoredProcedure" />
+<#
+    }
+#>
+  </ItemGroup>
+  <ItemGroup>
+<#
+    foreach(var schema in this.Project.Schemas)
+    {
+#>
+    <Build Include="<#=schema.Key#>\\<#=schema.Key#>.sql" />
+<#
+        foreach(var table in schema.Value.Tables)
+        {
+#>
+    <Build Include="<#=schema.Key#>\Table\\<#=table.Name#>.sql" />
+    <Build Include="<#=schema.Key#>\Tvp\Tvp_<#=table.Name#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_Insert_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_InsertTvp_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_Update_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_UpdateTvp_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_Delete_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_DeleteTvp_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_Get_<#=table.UnderlineFullName#>.sql" />
+    <Build Include="<#=schema.Key#>\StoredProcedure\\<#=table.UnderlineFullName#>\SP_Query_<#=table.UnderlineFullName#>.sql" />
+<#
+        }
+#>
+<#
+    }
+#>
+  </ItemGroup>
+</Project>
